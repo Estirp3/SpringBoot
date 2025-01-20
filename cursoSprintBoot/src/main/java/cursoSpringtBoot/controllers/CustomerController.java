@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@RequestMapping("/clientes")
 public class CustomerController {
 
     // se crea Data
@@ -19,60 +20,71 @@ public class CustomerController {
             new Customer(789,2,"Usuario2","u2","231123"),
             new Customer(234,2,"Usuario3","u3","111333")
     ));
-    @GetMapping("/clientes")
-    public List<Customer> getCustomer(){
-        return customers;
+
+    //@RequestMapping(method = RequestMethod.GET)
+    @GetMapping
+    public  ResponseEntity<List<Customer>> getCustomer(){
+        return  ResponseEntity.ok(customers);
+        // return customers;
     }
-    @GetMapping("/clientes/{username}")
-    public Customer getCliente(@PathVariable String username){
+
+    //@RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getCliente(@PathVariable String username){//
         for(Customer c : customers){
             if(c.getUsername().equalsIgnoreCase(username)){
                // System.out.println(getTipoCliente(username));
-                return c;
+               // return c;
+                return ResponseEntity.ok(c);
             }
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado con username : " + username);
     }
 
+    //@RequestMapping(method = RequestMethod.POST)
     //post
-    @PostMapping("/clientes")
-    public Customer postCliente(@RequestBody Customer customer){
+    @PostMapping
+    public ResponseEntity<?> postCliente(@RequestBody Customer customer){
         customers.add(customer);
-        return customer;
+        return ResponseEntity.status(HttpStatus.CREATED).body("El cliente fue creado con user name :" + customer.getUsername());
+
+
 
     }
-
+    //@RequestMapping(method = RequestMethod.PUT)
     //PUT
-    @PutMapping("/clientes")
-    public Customer putCliente(@RequestBody Customer customer){
+    @PutMapping
+    public ResponseEntity<?> putCliente(@RequestBody Customer customer){
         //iterar para modificar
         for (Customer c : customers){
             if(c.getID() == customer.getID()) {
                 c.setName(customer.getName());
                 c.setUsername(customer.getUsername());
                 c.setPassword(customer.getPassword());
-                return c;
+
+                return ResponseEntity.ok("Cliente modificado satifactoriamente : " +customer.getID() );
             }
-
         }
-
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID de cliente no encontrado : "+ customer.getID());
     }
 
+    //@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     //DELETE
-    @DeleteMapping("/clientes/{id}")
-    public Customer deleteCliente(@PathVariable int id ){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCliente(@PathVariable int id ){
         for (Customer c : customers){
             if(c.getID() == id){
                 customers.remove(c);
-                return c;
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("El cliente fue eliminado satifactroriamente : " + c.getID());
             }
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado : " + id);
     }
+
+    //@RequestMapping(method = RequestMethod.PATCH)
     // PATCH
-    @PatchMapping("/clientes")
-    public Customer patchCliente(@RequestBody Customer customer){
+    @PatchMapping
+    public ResponseEntity<?> patchCliente(@RequestBody Customer customer){
         //iterar para modificar
         for (Customer c : customers){
             if(c.getID() == customer.getID()) {
@@ -85,25 +97,15 @@ public class CustomerController {
                 if(customer.getPassword()!= null ){
                     c.setPassword(customer.getPassword());
                 }
-                return c;
+                return ResponseEntity.ok(c);
             }
 
         }
 
-        return null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("EL campo no existe : " + customer.getID());
     }
 
-    // verlo después
-     //public int getTipoCliente(String username){
-     //    for ( Customer c : customer){
-     //        if(c.getUsername().equalsIgnoreCase(username)){
-     //            if(c.getTipoCliente() == 1){
-     //                return 1;
-     //            }else{}
-     //        }
-     //    }
-     //    return 2;
-     //}
+
 
 
     /**
