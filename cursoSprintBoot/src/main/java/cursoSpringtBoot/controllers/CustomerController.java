@@ -3,8 +3,12 @@ package cursoSpringtBoot.controllers;
 import cursoSpringtBoot.domain.Customer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +50,14 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<?> postCliente(@RequestBody Customer customer){
         customers.add(customer);
-        return ResponseEntity.status(HttpStatus.CREATED).body("El cliente fue creado con user name :" + customer.getUsername());
+
+        URI location  = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{username}")
+                .buildAndExpand(customer.getUsername())
+                .toUri();
+        //return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(customer);
 
 
 
@@ -62,10 +73,12 @@ public class CustomerController {
                 c.setUsername(customer.getUsername());
                 c.setPassword(customer.getPassword());
 
-                return ResponseEntity.ok("Cliente modificado satifactoriamente : " +customer.getID() );
+                //return ResponseEntity.ok("Cliente modificado satifactoriamente : " +customer.getID() );
+                return ResponseEntity.noContent().build();
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID de cliente no encontrado : "+ customer.getID());
+       // return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID de cliente no encontrado : "+ customer.getID());
+        return ResponseEntity.noContent().build();
     }
 
     //@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -75,10 +88,12 @@ public class CustomerController {
         for (Customer c : customers){
             if(c.getID() == id){
                 customers.remove(c);
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("El cliente fue eliminado satifactroriamente : " + c.getID());
+                //return ResponseEntity.status(HttpStatus.NO_CONTENT).body("El cliente fue eliminado satifactroriamente : " + c.getID());
+                return ResponseEntity.noContent().build();
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado : " + id);
+        //return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado : " + id);
+        return ResponseEntity.noContent().build();
     }
 
     //@RequestMapping(method = RequestMethod.PATCH)
