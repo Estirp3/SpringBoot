@@ -58,10 +58,9 @@ public class CustomerController {
                 .toUri();
         //return ResponseEntity.created(location).build();
         return ResponseEntity.created(location).body(customer);
-
-
-
     }
+
+
     //@RequestMapping(method = RequestMethod.PUT)
     //PUT
     @PutMapping
