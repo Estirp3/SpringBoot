@@ -1,5 +1,8 @@
 package cursoSpringtBoot.domain;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+//forzamos el llamado en orden del json
+@JsonPropertyOrder({"id", "name", "price", "stock"})
 public class Product {
 
     private Integer ID;
@@ -7,12 +10,17 @@ public class Product {
     private Double price;
     private Integer stock;
 
+    // Contructor vacio
+    public Product(){}
+
+
     public Product(Integer ID, String Name, Double precio, Integer stock) {
         this.ID = ID;
         this.Name = Name;
         this.price = precio;
         this.stock = stock;
     }
+
 
     public Integer getID() {
         return ID;

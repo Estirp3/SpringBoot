@@ -2,6 +2,7 @@ package cursoSpringtBoot.service;
 
 import cursoSpringtBoot.domain.Customer;
 import cursoSpringtBoot.domain.Product;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Service
+@Service("listResourceService") // se transforma en un bin de servicio
 public class ProductServiceImpl implements ProductService {
 
 

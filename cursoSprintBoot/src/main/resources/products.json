@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Monitor gamer",
+    "price": 259.99,
+    "stock": 60
+  },
+  {
+    "id": 2,
+    "name": "mouse gamer",
+    "price": 45.54,
+    "stock": 10
+  },
+  {
+    "id": 3,
+    "name": "teclado mecanico",
+    "price": 145.33,
+    "stock": 25
+  },
+  {
+    "id": 4,
+    "name": "audifonos Razer",
+    "price": 250.00,
+    "stock": 5
+  }
+]
